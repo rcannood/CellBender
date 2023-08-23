@@ -101,7 +101,7 @@ MINIMUM_BARCODES_H5AD = 1e5
 PROB_POSTERIOR_BATCH_SIZE = 128
 
 # Name of checkpoint file.
-CHECKPOINT_FILE_NAME = 'ckpt.tar.gz'
+CHECKPOINT_FILE_NAME = 'none'
 
 # Whether to create an extended report (for development purposes).
 EXTENDED_REPORT = False
