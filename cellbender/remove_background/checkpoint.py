@@ -100,56 +100,8 @@ def save_checkpoint(filebase: str,
     """Save trained model and optimizer state in a checkpoint file.
     Any hyperparameters or metadata should be part of the model object."""
 
-    logger.info(f'Saving a checkpoint...')
-
-    try:
-
-        # Work in a temporary directory.
-        with tempfile.TemporaryDirectory() as tmp_dir:
-
-            basename = os.path.basename(filebase)
-            filebase = os.path.join(tmp_dir, basename)
-
-            file_list = save_random_state(filebase=filebase)
-
-            torch.save(model_obj, filebase + '_model.torch')
-            torch.save(scheduler, filebase + '_optim.torch')
-            scheduler.save(filebase + '_optim.pyro')  # use PyroOptim method
-            pyro.get_param_store().save(filebase + '_params.pyro')
-            file_list = file_list + [filebase + '_model.torch',
-                                     filebase + '_optim.torch',
-                                     filebase + '_optim.pyro',
-                                     filebase + '_params.pyro']
-
-            if train_loader is not None:
-                # train_loader_file = save_dataloader_state(filebase=filebase,
-                #                                           data_loader_state=train_loader.get_state(),
-                #                                           name='train')
-                torch.save(train_loader, filebase + '_train.loaderstate')
-                file_list.append(filebase + '_train.loaderstate')
-            if test_loader is not None:
-                # test_loader_file = save_dataloader_state(filebase=filebase,
-                #                                          data_loader_state=test_loader.get_state(),
-                #                                          name='test')
-                torch.save(test_loader, filebase + '_test.loaderstate')
-                file_list.append(filebase + '_test.loaderstate')
-
-            np.save(filebase + '_args.npy', args)
-            file_list.append(filebase + '_args.npy')
-
-            make_tarball(files=file_list, tarball_name=tarball_name)
-
-        logger.info(f'Saved checkpoint as {os.path.abspath(tarball_name)}')
-        return True
-
-    except KeyboardInterrupt:
-        logger.warning('Keyboard interrupt: will not save checkpoint')
-        return False
-
-    except Exception:
-        logger.warning('Could not save checkpoint')
-        logger.warning(traceback.format_exc())
-        return False
+    logger.info(f'Not saving a checkpoint...')
+    return True
 
 
 def load_checkpoint(filebase: Optional[str],
